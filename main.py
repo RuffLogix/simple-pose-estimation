@@ -1,4 +1,4 @@
-from src.app import ImagePoseEstimator
+from src.pose_estimator.image_pose_estimator import ImagePoseEstimator
 from src.visualizer import Visualizer
 
 

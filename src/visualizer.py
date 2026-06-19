@@ -9,7 +9,7 @@ class Visualizer:
     def visualize(image, pose_landmarker_result):
         h, w, _ = image.shape
 
-        fig, ax = plt.subplots()
+        _, ax = plt.subplots()
         ax.imshow(image)
 
         for pose in pose_landmarker_result.pose_landmarks:

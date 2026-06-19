@@ -1,5 +1,6 @@
 import mediapipe as mp
 
+from .base_pose_estimator import BaseEstimator
 from .constant import LITE_MODEL_PATH, SAMPLE_IMAGE_PATH
 
 BaseOptions = mp.tasks.BaseOptions
@@ -8,8 +9,9 @@ PoseLandmarkerOptions = mp.tasks.vision.PoseLandmarkerOptions
 VisionRunningMode = mp.tasks.vision.RunningMode
 
 
-class ImagePoseEstimator:
+class ImagePoseEstimator(BaseEstimator):
     def __init__(self, model_path: str = LITE_MODEL_PATH):
+        super().__init__(model_path)
         self.options = PoseLandmarkerOptions(
             base_options=BaseOptions(model_asset_path=model_path),
             running_mode=VisionRunningMode.IMAGE,
