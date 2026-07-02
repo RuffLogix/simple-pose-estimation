@@ -46,7 +46,7 @@ class Visualizer:
 
         for pose in pose_landmarker_result.pose_landmarks:
             for landmark in pose:
-                x = w - math.ceil(landmark.x * w)
+                x = math.ceil(landmark.x * w)
                 y = math.ceil(landmark.y * h)
 
                 cv2.circle(image, (x, y), 5, (0, 0, 255), -1)
@@ -60,10 +60,10 @@ class Visualizer:
                 start_landmark = pose[start_idx]
                 end_landmark = pose[end_idx]
 
-                x_start = w - int(start_landmark.x * w)
+                x_start = int(start_landmark.x * w)
                 y_start = int(start_landmark.y * h)
 
-                x_end = w - int(end_landmark.x * w)
+                x_end = int(end_landmark.x * w)
                 y_end = int(end_landmark.y * h)
 
                 cv2.line(image, (x_start, y_start), (x_end, y_end), (255, 0, 0), 2)
