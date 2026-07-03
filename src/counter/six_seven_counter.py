@@ -9,8 +9,8 @@ class SixSevenCounter:
         self.state = (
             0  # 0 = no arms up, 1 = left arm up, 2 = right arm up, 3 = both arms up
         )
-        self.prev_left = False
-        self.prev_right = False
+        self.prev_left = 0
+        self.prev_right = 0
 
     def _calculate_angle(self, shoulder, elbow, wrist):
         a = np.array(shoulder)
@@ -67,18 +67,30 @@ class SixSevenCounter:
 
         return right_angle < 90
 
+    def _update_prev_state(self, left_arm_up, right_arm_up):
+        if left_arm_up and self.prev_left == 0:
+            self.prev_left = 1
+        elif not left_arm_up and self.prev_left == 1:
+            self.prev_left = 2
+
+        if right_arm_up and self.prev_right == 0:
+            self.prev_right = 1
+        elif not right_arm_up and self.prev_right == 1:
+            self.prev_right = 2
+
     def _update_state(self, left_arm_up, right_arm_up):
-        if left_arm_up and not self.prev_left:
+        if left_arm_up and self.prev_left == 2:
             self.state |= 1 << 0
-        if right_arm_up and not self.prev_right:
+        if right_arm_up and self.prev_right == 2:
             self.state |= 1 << 1
 
         if self.state == 3:
             self.count += 1
             self.state = 0
+            self.prev_left = 0
+            self.prev_right = 0
 
-        self.prev_left = left_arm_up
-        self.prev_right = right_arm_up
+        self._update_prev_state(left_arm_up, right_arm_up)
 
     def update(self, pose_landmarker_result):
         if not pose_landmarker_result.pose_landmarks:
